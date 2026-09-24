@@ -94,17 +94,26 @@ class SmartSoftwareInstallerTool(Tool):
         # 2. Try Flatpak
         if shutil.which("flatpak"):
             try:
-                # Use --noninteractive to avoid hangs
-                search_res = subprocess.run(["flatpak", "search", package_name, "--columns=application"], capture_output=True, text=True)
+                # Use --noninteractive and timeout to avoid hanging the assistant
+                # Give it up to 60 seconds as Flatpak can be very slow to update metadata
+                search_res = subprocess.run(["flatpak", "search", package_name, "--columns=application"], capture_output=True, text=True, timeout=60)
                 lines = search_res.stdout.strip().split('\n')
-                if lines and len(lines) > 0 and lines[0]:
-                    app_id = lines[0].strip()
+                # Skip the "Application ID" header
+                app_id = None
+                for line in lines:
+                    if line.strip() and line.strip() != "Application ID":
+                        app_id = line.strip()
+                        break
+                
+                if app_id:
                     install_res = subprocess.run(
                         ["flatpak", "install", "--user", "--noninteractive", "-y", "flathub", app_id],
-                        capture_output=True, text=True
+                        capture_output=True, text=True, timeout=30
                     )
                     if install_res.returncode == 0:
                         return ToolResult(success=True, output=f"Installed {package_name} ({app_id}) via Flatpak.")
+            except subprocess.TimeoutExpired:
+                return ToolResult(success=False, error=f"Flatpak daemon timed out while trying to install {package_name}. The system flatpak-helper might be stuck updating caches.")
             except Exception as e:
                 pass
 
