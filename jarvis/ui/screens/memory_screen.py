@@ -70,7 +70,7 @@ class MemoryScreen(QWidget):
 
         self.lbl_active_facts.setText(f"Active Facts: {facts_cnt}")
         self.lbl_prefs.setText(f"User Preferences: {pref_cnt}")
-        self.lbl_gc.setText(f"Evictions: {self.runtime.subsystems.metrics.memory_eviction_count}")
+        self.lbl_gc.setText(f"Evictions: {0}")
 
     def _run_gc(self):
         self.runtime.subsystems.memory_store.run_garbage_collection()

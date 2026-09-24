@@ -4,7 +4,7 @@ Replicates Android SkillsScreen.kt for Linux PySide6 GUI.
 """
 
 import asyncio
-from PySide6.QtWidgets import QWidget, QVBoxLayout, QGridLayout, QGroupBox, QPushButton, QLabel, QLineEdit
+from PySide6.QtWidgets import QWidget, QVBoxLayout, QHBoxLayout, QGridLayout, QGroupBox, QPushButton, QLabel, QLineEdit
 from PySide6.QtCore import Qt
 
 class SkillsScreen(QWidget):
