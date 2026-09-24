@@ -19,7 +19,23 @@ def main():
     parser.add_argument("--cli", type=str, help="Execute natural language command in headless CLI mode")
     parser.add_argument("--daemon", action="store_true", help="Run in headless systemd daemon mode")
     parser.add_argument("--overlay", action="store_true", help="Launch the transparent Arc Reactor HUD overlay")
+    parser.add_argument("--set-api-key", type=str, help="Save Groq/OpenAI API key to ~/.config/jarvis/config.json")
     args = parser.parse_args()
+    
+    if args.set_api_key:
+        import json
+        config_dir = os.path.expanduser("~/.config/jarvis")
+        os.makedirs(config_dir, exist_ok=True)
+        config_path = os.path.join(config_dir, "config.json")
+        config = {}
+        if os.path.exists(config_path):
+            with open(config_path, "r") as f:
+                config = json.load(f)
+        config["llm_api_key"] = args.set_api_key
+        with open(config_path, "w") as f:
+            json.dump(config, f, indent=4)
+        print(f"API key successfully saved to {config_path}")
+        return
 
     runtime = AssistantRuntime()
     

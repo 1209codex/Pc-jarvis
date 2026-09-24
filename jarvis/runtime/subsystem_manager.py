@@ -23,6 +23,17 @@ class SubsystemManager:
     def __init__(self, config_dir: str = None):
         self.config_dir = config_dir or os.path.expanduser("~/.config/jarvis")
         os.makedirs(self.config_dir, exist_ok=True)
+        
+        # Load config
+        import json
+        self.config = {}
+        config_path = os.path.join(self.config_dir, "config.json")
+        if os.path.exists(config_path):
+            try:
+                with open(config_path, "r") as f:
+                    self.config = json.load(f)
+            except Exception as e:
+                logger.error(f"Failed to load config: {e}")
 
         self.world_store = WorldStateStore.shared
         self.policy_engine = PolicyEngine()
@@ -36,7 +47,9 @@ class SubsystemManager:
         self.raphael_retrieval = RaphaelRetrievalManager()
         self.rag_store = RagStore()
 
-        self.model_router = ModelRouter()
+        api_key = self.config.get("llm_api_key", os.environ.get("JARVIS_API_KEY", ""))
+        provider = self.config.get("llm_provider", "Groq")
+        self.model_router = ModelRouter(api_key=api_key, provider=provider)
 
     def handle_memory_pressure(self):
         """Reclaims memory on high RAM pressure by evicting RAG vector caches and running Memory GC."""

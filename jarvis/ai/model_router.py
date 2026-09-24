@@ -13,7 +13,8 @@ logger = logging.getLogger("ModelRouter")
 
 class ModelRouter:
     def __init__(self, api_key: str = "", provider: str = "Groq", default_model: str = LlmConfig.DEFAULT_MODEL):
-        self.api_key = api_key
+        import os
+        self.api_key = api_key or os.environ.get("GROQ_API_KEY", "") or os.environ.get("OPENAI_API_KEY", "")
         self.provider = provider
         self.default_model = default_model
         self.ollama_endpoint = "http://localhost:11434/api/generate"
