@@ -6,7 +6,7 @@ echo " 🤖 Installing J.A.R.V.I.S. for Linux Desktop"
 echo "====================================================="
 
 echo "[1/4] Installing system dependencies (requires sudo)..."
-sudo apt-get update
+sudo apt-get update || true
 sudo apt-get install -y python3 python3-pip python3-venv xdotool xprintidle brightnessctl libportaudio2 xclip libxcb-cursor0
 
 echo "[2/4] Setting up Python virtual environment..."
