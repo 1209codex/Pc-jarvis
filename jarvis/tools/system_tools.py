@@ -107,8 +107,8 @@ class SmartSoftwareInstallerTool(Tool):
                 
                 if app_id:
                     install_res = subprocess.run(
-                        ["flatpak", "install", "--user", "--noninteractive", "-y", "flathub", app_id],
-                        capture_output=True, text=True, timeout=30
+                        ["pkexec", "flatpak", "install", "-y", "flathub", app_id],
+                        capture_output=True, text=True, timeout=120
                     )
                     if install_res.returncode == 0:
                         return ToolResult(success=True, output=f"Installed {package_name} ({app_id}) via Flatpak.")
