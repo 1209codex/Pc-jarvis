@@ -69,23 +69,44 @@ class SpeakTool(Tool):
     async def execute(self, text: str, **kwargs) -> ToolResult:
         return ToolResult(success=True, output=text)
 
-class InstallSoftwareTool(Tool):
+class SmartSoftwareInstallerTool(Tool):
     name = "install_software"
-    description = "Installs a package using APT. Uses pkexec or sudo if needed."
+    description = "Intelligently finds and installs software from APT, Flatpak, or web."
 
     async def execute(self, package_name: str, **kwargs) -> ToolResult:
         import subprocess
+        import shutil
+
+        # 1. Try APT
         try:
-            # First try without sudo if it's somehow allowed or we are root
-            # But usually we need pkexec for GUI auth or sudo
-            # pkexec apt-get install -y <package_name>
-            res = subprocess.run(
-                ["pkexec", "apt-get", "install", "-y", package_name],
-                capture_output=True, text=True
-            )
-            if res.returncode == 0:
-                return ToolResult(success=True, output=f"Successfully installed {package_name}:\n{res.stdout[:500]}")
-            else:
-                return ToolResult(success=False, error=f"Failed to install {package_name}. Error: {res.stderr}")
-        except Exception as e:
-            return ToolResult(success=False, error=str(e))
+            res = subprocess.run(["apt-cache", "search", f"^{package_name}$"], capture_output=True, text=True)
+            if res.stdout.strip():
+                # Package exists in APT
+                install_res = subprocess.run(
+                    ["pkexec", "apt-get", "install", "-y", package_name],
+                    capture_output=True, text=True
+                )
+                if install_res.returncode == 0:
+                    return ToolResult(success=True, output=f"Installed {package_name} via APT.")
+        except Exception:
+            pass
+
+        # 2. Try Flatpak
+        if shutil.which("flatpak"):
+            try:
+                # Use --noninteractive to avoid hangs
+                search_res = subprocess.run(["flatpak", "search", package_name, "--columns=application"], capture_output=True, text=True)
+                lines = search_res.stdout.strip().split('\n')
+                if lines and len(lines) > 0 and lines[0]:
+                    app_id = lines[0].strip()
+                    install_res = subprocess.run(
+                        ["flatpak", "install", "--user", "--noninteractive", "-y", "flathub", app_id],
+                        capture_output=True, text=True
+                    )
+                    if install_res.returncode == 0:
+                        return ToolResult(success=True, output=f"Installed {package_name} ({app_id}) via Flatpak.")
+            except Exception as e:
+                pass
+
+        # Fallback error
+        return ToolResult(success=False, error=f"Could not find or install '{package_name}' via APT or Flatpak.")
