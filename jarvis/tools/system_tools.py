@@ -10,9 +10,13 @@ from jarvis.tools.registry import Tool, ToolResult
 
 class OpenApplicationTool(Tool):
     name = "open_application"
-    description = "Launches or focuses any installed Linux binary application."
+    description = "Launches or focuses any installed Linux binary application or Flatpak."
 
     async def execute(self, app_name: str, **kwargs) -> ToolResult:
+        import subprocess
+        import shutil
+
+        # 1. Try focusing existing window
         if shutil.which("xdotool"):
             res = subprocess.run(["xdotool", "search", "--onlyvisible", "--class", app_name], capture_output=True, text=True)
             if res.returncode == 0 and res.stdout.strip():
@@ -20,11 +24,26 @@ class OpenApplicationTool(Tool):
                 subprocess.run(["xdotool", "windowactivate", window_id])
                 return ToolResult(success=True, output=f"Activated window for {app_name}")
         
+        # 2. Try matching a Flatpak app
+        if shutil.which("flatpak"):
+            try:
+                list_res = subprocess.run(["flatpak", "list", "--app", "--columns=application,name"], capture_output=True, text=True)
+                for line in list_res.stdout.split('\n'):
+                    parts = line.strip().split('\t')
+                    if len(parts) >= 2:
+                        app_id, name = parts[0].strip(), parts[1].strip()
+                        if app_name.lower() in app_id.lower() or app_name.lower() in name.lower():
+                            subprocess.Popen(["flatpak", "run", app_id])
+                            return ToolResult(success=True, output=f"Launched Flatpak application '{name}' ({app_id})")
+            except Exception:
+                pass
+
+        # 3. Fallback to standard binary launch
         try:
             subprocess.Popen([app_name])
             return ToolResult(success=True, output=f"Launched Linux application '{app_name}'")
         except Exception as e:
-            return ToolResult(success=False, error=f"Could not launch '{app_name}': {e}")
+            return ToolResult(success=False, error=f"Could not launch '{app_name}' as binary or flatpak: {e}")
 
 class SetVolumeTool(Tool):
     name = "set_volume"
