@@ -6,12 +6,11 @@ Replicates Android WebSearchTool.kt, DeepResearchTool.kt, QuickNotesTool.kt, Rem
 import urllib.parse
 import urllib.request
 import json
-from jarvis.tools.registry import Tool, ToolResult, AutonomyTier
+from jarvis.tools.registry import Tool, ToolResult
 
 class WebSearchTool(Tool):
     name = "web_search"
     description = "Searches the web for real-time information via DuckDuckGo API."
-    required_tier = AutonomyTier.TIER_1_LOW_RISK_LOCAL
 
     async def execute(self, query: str, **kwargs) -> ToolResult:
         try:
@@ -27,7 +26,6 @@ class WebSearchTool(Tool):
 class DailyBriefingTool(Tool):
     name = "daily_briefing"
     description = "Generates a contextual morning briefing summary."
-    required_tier = AutonomyTier.TIER_0_READ_ONLY
 
     async def execute(self, **kwargs) -> ToolResult:
         briefing = "Good morning Sir! All Linux background services are active. Systems are operating nominal."

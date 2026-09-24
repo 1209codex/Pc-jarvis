@@ -6,12 +6,11 @@ Replicates Android DeviceSettingsTool.kt, SystemSwitchboardTool.kt, OpenAppTool.
 import subprocess
 import shutil
 import re
-from jarvis.tools.registry import Tool, ToolResult, AutonomyTier
+from jarvis.tools.registry import Tool, ToolResult
 
 class OpenApplicationTool(Tool):
     name = "open_application"
     description = "Launches or focuses any installed Linux binary application."
-    required_tier = AutonomyTier.TIER_1_LOW_RISK_LOCAL
 
     async def execute(self, app_name: str, **kwargs) -> ToolResult:
         if shutil.which("xdotool"):
@@ -30,7 +29,6 @@ class OpenApplicationTool(Tool):
 class SetVolumeTool(Tool):
     name = "set_volume"
     description = "Adjusts system volume percentage using PulseAudio/PipeWire pactl."
-    required_tier = AutonomyTier.TIER_5_SYSTEM_SETTINGS
 
     async def execute(self, percent: int, **kwargs) -> ToolResult:
         if shutil.which("pactl"):
@@ -42,7 +40,6 @@ class SetVolumeTool(Tool):
 class BatteryStatusTool(Tool):
     name = "get_battery_status"
     description = "Queries Linux upower battery status."
-    required_tier = AutonomyTier.TIER_0_READ_ONLY
 
     async def execute(self, **kwargs) -> ToolResult:
         try:
@@ -56,7 +53,6 @@ class BatteryStatusTool(Tool):
 class NaturalLanguageCalculatorTool(Tool):
     name = "calculator"
     description = "Evaluates mathematical expressions."
-    required_tier = AutonomyTier.TIER_0_READ_ONLY
 
     async def execute(self, expression: str, **kwargs) -> ToolResult:
         try:
@@ -69,7 +65,6 @@ class NaturalLanguageCalculatorTool(Tool):
 class SpeakTool(Tool):
     name = "speak"
     description = "Synthesizes spoken text response to user."
-    required_tier = AutonomyTier.TIER_0_READ_ONLY
 
     async def execute(self, text: str, **kwargs) -> ToolResult:
         return ToolResult(success=True, output=text)

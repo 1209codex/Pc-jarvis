@@ -5,12 +5,11 @@ Replicates Android SpotifyControlTool.kt, MusicPlayTool.kt, YouTubePlayTool.kt &
 
 import subprocess
 import shutil
-from jarvis.tools.registry import Tool, ToolResult, AutonomyTier
+from jarvis.tools.registry import Tool, ToolResult
 
 class MediaPlayPauseTool(Tool):
     name = "media_play_pause"
     description = "Toggles media playback (Play/Pause) via Linux playerctl / MPRIS DBus."
-    required_tier = AutonomyTier.TIER_2_MEDIA_CONTROL
 
     async def execute(self, **kwargs) -> ToolResult:
         if shutil.which("playerctl"):
@@ -22,7 +21,6 @@ class MediaPlayPauseTool(Tool):
 class MediaNextTool(Tool):
     name = "media_next"
     description = "Skips to the next track via playerctl."
-    required_tier = AutonomyTier.TIER_2_MEDIA_CONTROL
 
     async def execute(self, **kwargs) -> ToolResult:
         if shutil.which("playerctl"):
@@ -33,7 +31,6 @@ class MediaNextTool(Tool):
 class MediaPreviousTool(Tool):
     name = "media_prev"
     description = "Returns to the previous track via playerctl."
-    required_tier = AutonomyTier.TIER_2_MEDIA_CONTROL
 
     async def execute(self, **kwargs) -> ToolResult:
         if shutil.which("playerctl"):
@@ -44,7 +41,6 @@ class MediaPreviousTool(Tool):
 class MusicPlayTool(Tool):
     name = "media_play"
     description = "Plays a specified track or search query on Spotify / YouTube / default player."
-    required_tier = AutonomyTier.TIER_2_MEDIA_CONTROL
 
     async def execute(self, track: str = "", **kwargs) -> ToolResult:
         if shutil.which("xdg-open") and track:

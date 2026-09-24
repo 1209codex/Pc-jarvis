@@ -1,12 +1,10 @@
 """
 Linux World State Store & System Telemetry Provider
-Replicates Android WorldStateStore.kt & AndroidStateProvider.kt for Linux Software.
 """
 
-import os
-import shutil
 import subprocess
 import time
+import psutil
 import logging
 from typing import Dict, Any, Optional
 
@@ -14,46 +12,18 @@ logger = logging.getLogger("WorldStateStore")
 
 class LinuxStateProvider:
     def get_cpu_usage(self) -> float:
-        try:
-            with open("/proc/stat", "r") as f:
-                line = f.readline()
-                fields = [float(x) for x in line.split()[1:]]
-                idle = fields[3]
-                total = sum(fields)
-                return round(100.0 * (1.0 - idle / total), 1)
-        except Exception:
-            return 0.0
+        return psutil.cpu_percent()
 
     def get_memory_usage(self) -> Dict[str, float]:
-        try:
-            mem_total, mem_available = 0.0, 0.0
-            with open("/proc/meminfo", "r") as f:
-                for line in f:
-                    if line.startswith("MemTotal:"):
-                        mem_total = float(line.split()[1]) / 1024.0
-                    elif line.startswith("MemAvailable:"):
-                        mem_available = float(line.split()[1]) / 1024.0
-            used = mem_total - mem_available
-            pct = (used / mem_total * 100.0) if mem_total > 0 else 0.0
-            return {"total_mb": round(mem_total, 1), "used_mb": round(used, 1), "percent": round(pct, 1)}
-        except Exception:
-            return {"total_mb": 0.0, "used_mb": 0.0, "percent": 0.0}
+        mem = psutil.virtual_memory()
+        return {"total_mb": round(mem.total / 1024 / 1024, 1), "used_mb": round(mem.used / 1024 / 1024, 1), "percent": mem.percent}
 
     def get_battery_info(self) -> Dict[str, Any]:
-        """Queries Linux upower or sysfs battery info."""
+        """Queries Linux battery info."""
         try:
-            res = subprocess.run(["upower", "-i", "/org/freedesktop/UPower/devices/battery_BAT0"], capture_output=True, text=True)
-            if res.returncode == 0:
-                percentage = 100
-                state = "charging"
-                for line in res.stdout.splitlines():
-                    if "percentage:" in line:
-                        p_val = int(line.split(":")[1].strip().replace("%", ""))
-                        if p_val > 0:
-                            percentage = p_val
-                    elif "state:" in line:
-                        state = line.split(":")[1].strip()
-                return {"percentage": percentage, "state": state, "is_charging": state in ["charging", "fully-charged"]}
+            bat = psutil.sensors_battery()
+            if bat:
+                return {"percentage": int(bat.percent), "state": "charging" if bat.power_plugged else "discharging", "is_charging": bat.power_plugged}
         except Exception:
             pass
         return {"percentage": 100, "state": "unknown", "is_charging": True}

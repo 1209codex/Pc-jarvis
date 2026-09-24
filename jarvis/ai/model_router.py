@@ -8,7 +8,6 @@ import logging
 import requests
 from typing import Dict, List, Any, Optional
 from jarvis.ai.llm_config import LlmConfig
-from jarvis.controlplane.goal_manager import PlannedGoal, GoalStep
 
 logger = logging.getLogger("ModelRouter")
 
@@ -19,7 +18,7 @@ class ModelRouter:
         self.default_model = default_model
         self.ollama_endpoint = "http://localhost:11434/api/generate"
 
-    async def plan_goal(self, prompt: str, context: Dict[str, Any], available_tools: List[Dict[str, Any]] = None) -> PlannedGoal:
+    async def plan_goal(self, prompt: str, context: Dict[str, Any], available_tools: List[Dict[str, Any]] = None) -> Dict[str, Any]:
         """
         Queries selected LLM provider to construct structured goal steps.
         Falls back gracefully if network or credentials are unavailable.
@@ -72,44 +71,39 @@ class ModelRouter:
             return resp.json()["choices"][0]["message"]["content"]
         return None
 
-    def _parse_llm_response(self, prompt: str, llm_text: str) -> PlannedGoal:
+    def _parse_llm_response(self, prompt: str, llm_text: str) -> Dict[str, Any]:
         try:
             data = json.loads(llm_text)
-            steps = [GoalStep(s["tool"], s.get("arguments", {}), s.get("description", "")) for s in data.get("steps", [])]
-            return PlannedGoal(prompt, steps, data.get("final_response"))
+            steps = [{"tool_name": s["tool"], "arguments": s.get("arguments", {}), "description": s.get("description", "")} for s in data.get("steps", [])]
+            return {"goal_text": prompt, "steps": steps, "final_response": data.get("final_response")}
         except Exception:
-            return PlannedGoal(prompt, [], llm_text)
+            return {"goal_text": prompt, "steps": [], "final_response": llm_text}
 
-    def _heuristic_goal_planner(self, prompt: str) -> PlannedGoal:
+    def _heuristic_goal_planner(self, prompt: str) -> Dict[str, Any]:
         """Built-in Natural Language Classifier fallback for common Linux tasks."""
         lower = prompt.lower()
         steps = []
         response = ""
 
         if "volume" in lower:
-            # Volume control intent
             import re
             numbers = re.findall(r'\d+', lower)
             vol = int(numbers[0]) if numbers else 50
-            steps.append(GoalStep("set_volume", {"percent": vol}, f"Set system volume to {vol}%"))
+            steps.append({"tool_name": "set_volume", "arguments": {"percent": vol}, "description": f"Set system volume to {vol}%"})
             response = f"Setting system volume to {vol}%."
-
         elif "open" in lower or "launch" in lower:
             app_name = lower.replace("open", "").replace("launch", "").strip()
-            steps.append(GoalStep("open_application", {"app_name": app_name}, f"Launch {app_name}"))
+            steps.append({"tool_name": "open_application", "arguments": {"app_name": app_name}, "description": f"Launch {app_name}"})
             response = f"Opening {app_name}."
-
         elif "battery" in lower or "status" in lower:
-            steps.append(GoalStep("get_battery_status", {}, "Query battery status"))
+            steps.append({"tool_name": "get_battery_status", "arguments": {}, "description": "Query battery status"})
             response = "Checking system battery status."
-
         elif "play" in lower:
             song = lower.replace("play", "").strip()
-            steps.append(GoalStep("media_play", {"track": song}, f"Play media track '{song}'"))
+            steps.append({"tool_name": "media_play", "arguments": {"track": song}, "description": f"Play media track '{song}'"})
             response = f"Playing {song}."
-
         else:
-            steps.append(GoalStep("speak", {"text": f"I processed your request: '{prompt}'"}, "Acknowledge request"))
+            steps.append({"tool_name": "speak", "arguments": {"text": f"I processed your request: '{prompt}'"}, "description": "Acknowledge request"})
             response = f"Sir, I am processing your request: {prompt}"
 
-        return PlannedGoal(prompt, steps, response)
+        return {"goal_text": prompt, "steps": steps, "final_response": response}
