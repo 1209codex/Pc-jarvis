@@ -70,8 +70,9 @@ class SettingsScreen(QWidget):
         self.txt_logs.append("[VOICE] Calibrated Threshold: 0.70 | Acoustic Noise Floor: 65.2 dB | Status: ENROLLED")
 
     def refresh_logs(self):
-        records = self.runtime.subsystems.task_state_manager.audit_records
+        records = getattr(self.runtime.subsystems, 'task_state_manager', None)
         lines = []
-        for r in records[-50:]:
-            lines.append(f"[{r['status']}] Tool: {r['action']} | Risk: {r['risk']} | Details: {r['details']}")
+        if records and hasattr(records, 'audit_records'):
+            for r in records.audit_records[-50:]:
+                lines.append(f"[{r['status']}] Tool: {r['action']} | Risk: {r['risk']} | Details: {r['details']}")
         self.txt_logs.setText("\n".join(lines) if lines else "No execution logs captured yet.")

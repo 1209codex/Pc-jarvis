@@ -68,7 +68,7 @@ class DashboardScreen(QWidget):
         layout.addWidget(self.command_bar)
 
         # Listen to pipeline stage changes
-        self.runtime.subsystems.execution_pipeline.add_listener(self._on_stage_changed)
+        # self.runtime.subsystems.execution_pipeline.add_listener(self._on_stage_changed)
 
     def _on_stage_changed(self, stage: str):
         self.protocol_stage.setText(f"Stage: {stage}")
