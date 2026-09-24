@@ -42,7 +42,7 @@ class AssistantRuntime:
     def _audit_callback(self, tool_name: str, tier: str, reason: str, status: str, details: str):
         logger.info(f"Audit: {tool_name} [{tier}] {status} - {reason}")
 
-    async def execute_command(self, user_prompt: str) -> Dict[str, Any]:
+    async def execute_command(self, user_prompt: str, progress_callback=None) -> Dict[str, Any]:
         """Runs complete autonomous loop: context enrichment -> LLM planning -> tool execution -> verification."""
         logger.info(f"Executing Assistant Command: '{user_prompt}'")
 
@@ -65,7 +65,16 @@ class AssistantRuntime:
         for step in goal_plan.get("steps", []):
             tool_name = step.get("tool_name")
             arguments = step.get("arguments", {})
+            description = step.get("description", "")
+            
+            if progress_callback:
+                progress_callback("TOOL_START", {"tool_name": tool_name, "description": description})
+                
             result = await self.tool_executor.execute_tool(tool_name, arguments)
+            
+            if progress_callback:
+                progress_callback("TOOL_FINISH", {"tool_name": tool_name, "success": result.success, "error": result.error})
+                
             step_results.append(result)
 
             if not result.success:

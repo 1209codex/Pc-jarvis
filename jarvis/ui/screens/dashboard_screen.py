@@ -83,10 +83,28 @@ class DashboardScreen(QWidget):
     def _handle_user_command(self, text: str):
         self.dialogue_log.append(f"<br/><span style='color:#00E5FF;'>[USER]</span> {text}")
         import asyncio
-        asyncio.create_task(self._async_execute(text))
+        asyncio.get_event_loop().create_task(self._async_execute(text))
 
     async def _async_execute(self, text: str):
-        result = await self.runtime.execute_command(text)
+        def on_progress(event: str, data: dict):
+            if event == "TOOL_START":
+                tname = data.get('tool_name', 'unknown')
+                desc = data.get('description', '')
+                self.dialogue_log.append(f"<span style='color:#8A99AD;'> &nbsp;&nbsp;⚙️ <i>Executing tool: <b>{tname}</b>... ({desc})</i></span>")
+            elif event == "TOOL_FINISH":
+                tname = data.get('tool_name', 'unknown')
+                if data.get('success'):
+                    self.dialogue_log.append(f"<span style='color:#00E676;'> &nbsp;&nbsp;✅ <i>Tool complete: <b>{tname}</b></i></span>")
+                else:
+                    err = data.get('error', '')
+                    self.dialogue_log.append(f"<span style='color:#FF5252;'> &nbsp;&nbsp;❌ <i>Tool failed: <b>{tname}</b> ({err})</i></span>")
+
+        # Fallback to no-args if signature doesn't match
+        try:
+            result = await self.runtime.execute_command(text, progress_callback=on_progress)
+        except TypeError:
+            result = await self.runtime.execute_command(text)
+            
         spoken = result.get("spoken_response", "")
         self.dialogue_log.append(f"<span style='color:#63EFFF;'>[J.A.R.V.I.S.]</span> {spoken}")
 
