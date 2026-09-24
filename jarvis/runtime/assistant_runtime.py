@@ -9,7 +9,7 @@ from typing import Dict, List, Any, Optional
 from jarvis.runtime.subsystem_manager import SubsystemManager
 from jarvis.tools.registry import ToolRegistry, ToolExecutor, ToolResult
 from jarvis.tools.media_tools import MediaPlayPauseTool, MediaNextTool, MediaPreviousTool, MusicPlayTool
-from jarvis.tools.system_tools import OpenApplicationTool, SetVolumeTool, BatteryStatusTool, NaturalLanguageCalculatorTool, SpeakTool
+from jarvis.tools.system_tools import OpenApplicationTool, SetVolumeTool, BatteryStatusTool, NaturalLanguageCalculatorTool, SpeakTool, InstallSoftwareTool
 from jarvis.tools.messaging_tools import ReadUnreadMessagesTool, SendMessageTool
 from jarvis.tools.vision_tools import CameraVisionTool, ScreenVisionTool
 from jarvis.tools.research_tools import WebSearchTool, DailyBriefingTool
@@ -31,7 +31,7 @@ class AssistantRuntime:
     def _register_default_tools(self):
         tools = [
             MediaPlayPauseTool(), MediaNextTool(), MediaPreviousTool(), MusicPlayTool(),
-            OpenApplicationTool(), SetVolumeTool(), BatteryStatusTool(), NaturalLanguageCalculatorTool(), SpeakTool(),
+            OpenApplicationTool(), SetVolumeTool(), BatteryStatusTool(), NaturalLanguageCalculatorTool(), SpeakTool(), InstallSoftwareTool(),
             ReadUnreadMessagesTool(), SendMessageTool(),
             CameraVisionTool(), ScreenVisionTool(),
             WebSearchTool(), DailyBriefingTool()

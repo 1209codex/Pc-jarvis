@@ -1,6 +1,6 @@
 # 🤖 J.A.R.V.I.S. — Autonomous Linux AI Super-Agent & Voice Assistant
 
-[![Platform](https://img.shields.io/badge/Platform-Linux%20(Ubuntu/Debian)-00E5FF?style=flat-square)](https://github.com/1209codex/android-jarvis)
+[![Platform](https://img.shields.io/badge/Platform-Linux%20(Ubuntu/Debian)-00E5FF?style=flat-square)](https://github.com/1209codex/Pc-jarvis)
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=flat-square)](https://python.org)
 [![GUI](https://img.shields.io/badge/GUI-PySide6%20(Qt)-green?style=flat-square)](https://doc.qt.io/qtforpython/)
 
@@ -29,7 +29,7 @@ The user interface is built using **PySide6**, strictly adhering to Material 3 c
 We provide an automated installation script that sets up all dependencies, virtual environments, desktop shortcuts, and systemd services.
 
 ```bash
-git clone https://github.com/1209codex/android-jarvis.git pc-jarvis
+git clone https://github.com/1209codex/Pc-jarvis.git pc-jarvis
 cd pc-jarvis
 
 # Run the installer script
@@ -79,6 +79,7 @@ systemctl --user enable jarvis.service
 ### 5. ⚡ OS System Controls & Automations
 - *"turn on flashlight"* $\to$ Controls your keyboard/screen brightness via `brightnessctl`.
 - *"open Chrome"* $\to$ Uses `xdotool` and system calls to launch Linux applications.
+- *"install htop"* $\to$ Installs software packages directly via APT using `pkexec`.
 - *"read my clipboard"* $\to$ Fetches the current text in your copy-buffer.
 
 ### 6. 🧠 Local Neural Memory Core

@@ -68,3 +68,24 @@ class SpeakTool(Tool):
 
     async def execute(self, text: str, **kwargs) -> ToolResult:
         return ToolResult(success=True, output=text)
+
+class InstallSoftwareTool(Tool):
+    name = "install_software"
+    description = "Installs a package using APT. Uses pkexec or sudo if needed."
+
+    async def execute(self, package_name: str, **kwargs) -> ToolResult:
+        import subprocess
+        try:
+            # First try without sudo if it's somehow allowed or we are root
+            # But usually we need pkexec for GUI auth or sudo
+            # pkexec apt-get install -y <package_name>
+            res = subprocess.run(
+                ["pkexec", "apt-get", "install", "-y", package_name],
+                capture_output=True, text=True
+            )
+            if res.returncode == 0:
+                return ToolResult(success=True, output=f"Successfully installed {package_name}:\n{res.stdout[:500]}")
+            else:
+                return ToolResult(success=False, error=f"Failed to install {package_name}. Error: {res.stderr}")
+        except Exception as e:
+            return ToolResult(success=False, error=str(e))
