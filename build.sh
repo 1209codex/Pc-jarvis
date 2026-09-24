@@ -26,7 +26,8 @@ cat << 'DESK' > dist/install_desktop.sh
 #!/bin/bash
 TARGET_DIR=~/.local/share/JARVIS
 mkdir -p "$TARGET_DIR"
-cp -r JARVIS/* "$TARGET_DIR/"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+cp -r "$SCRIPT_DIR/JARVIS/"* "$TARGET_DIR/"
 
 mkdir -p ~/.local/share/applications
 cat <<EOF2 > ~/.local/share/applications/jarvis.desktop
