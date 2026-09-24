@@ -91,6 +91,10 @@ class ModelRouter:
             vol = int(numbers[0]) if numbers else 50
             steps.append({"tool_name": "set_volume", "arguments": {"percent": vol}, "description": f"Set system volume to {vol}%"})
             response = f"Setting system volume to {vol}%."
+        elif "install" in lower:
+            pkg = lower.replace("install", "").strip()
+            steps.append({"tool_name": "install_software", "arguments": {"package_name": pkg}, "description": f"Install package {pkg}"})
+            response = f"Installing {pkg}."
         elif "open" in lower or "launch" in lower:
             app_name = lower.replace("open", "").replace("launch", "").strip()
             steps.append({"tool_name": "open_application", "arguments": {"app_name": app_name}, "description": f"Launch {app_name}"})

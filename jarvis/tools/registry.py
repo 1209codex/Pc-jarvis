@@ -59,10 +59,11 @@ class ToolExecutor:
             logger.error(err)
             return ToolResult(success=False, error=err)
 
-        # 4D Policy Engine Security Validation
+        allowed, reason = self.policy_engine.validate_action(tool_name, getattr(tool, 'is_root_required', False))
         if not allowed:
             logger.warning(f"Policy Engine BLOCKED tool '{tool_name}': {reason}")
             if self.audit_sink:
+                self.audit_sink(tool_name, "BLOCKED", reason, "FAILED", str(arguments))
             return ToolResult(success=False, error=f"Security Policy Blocked Action: {reason}")
 
         try:
@@ -73,8 +74,10 @@ class ToolExecutor:
                 result = tool.execute(**arguments)
 
             if self.audit_sink:
+                self.audit_sink(tool_name, "ALLOWED", "OK", "SUCCESS" if result.success else "FAILED", str(result.output or result.error))
             return result
         except Exception as e:
             logger.error(f"Execution exception in tool '{tool_name}': {e}")
             if self.audit_sink:
+                self.audit_sink(tool_name, "ALLOWED", "EXCEPTION", "FAILED", str(e))
             return ToolResult(success=False, error=str(e))
