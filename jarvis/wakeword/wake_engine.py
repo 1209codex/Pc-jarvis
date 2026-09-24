@@ -1,13 +1,11 @@
 """
 Continuous Audio Stream Wake-Word Listening Engine
-Replicates Android WakeWordEngine.kt for Linux Software.
 """
 
 import logging
 import numpy as np
 from typing import Callable, Optional
 from jarvis.wakeword.acoustic_detector import AcousticWakeWordDetector
-from jarvis.wakeword.voice_profile import UserVoiceProfile
 
 logger = logging.getLogger("WakeWordEngine")
 
@@ -16,7 +14,7 @@ class WakeWordEngine:
         self.sample_rate = sample_rate
         self.is_listening = False
         self.detector = AcousticWakeWordDetector()
-        self.user_profile = UserVoiceProfile()
+        self.calibrated_threshold = 0.75
         self.on_wake_detected: Optional[Callable[[], None]] = None
         self._sd_stream = None
 
@@ -52,7 +50,7 @@ class WakeWordEngine:
             return
         pcm_data = indata.flatten()
         score = self.detector.evaluate_audio_frame(pcm_data)
-        if score >= self.user_profile.calibrated_threshold:
+        if score >= self.calibrated_threshold:
             logger.info(f"Wake word phrase 'Jarvis' detected! (Confidence: {score})")
             if self.on_wake_detected:
                 self.on_wake_detected()

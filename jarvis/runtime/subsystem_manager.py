@@ -1,6 +1,5 @@
 """
-Lazy Subsystem Container & Memory Pressure Coordinator
-Replicates Android SubsystemManager.kt for Linux Software.
+Lazy Subsystem Container
 """
 
 import os
@@ -8,11 +7,7 @@ import logging
 from typing import List, Dict, Any, Optional
 
 from jarvis.controlplane.world_state import WorldStateStore
-from jarvis.controlplane.device_guardian import DeviceGuardian
-from jarvis.controlplane.failure_journal import FailureJournal
 from jarvis.foundation.policy_engine import PolicyEngine
-from jarvis.foundation.task_state_manager import TaskStateManager
-from jarvis.foundation.metrics_collector import MetricsCollector
 from jarvis.memory.memory_store import MemoryStore
 from jarvis.retrieval.raphael_retrieval import RaphaelRetrievalManager
 from jarvis.rag.rag_store import RagStore
@@ -29,13 +24,7 @@ class SubsystemManager:
         self.config_dir = config_dir or os.path.expanduser("~/.config/jarvis")
         os.makedirs(self.config_dir, exist_ok=True)
 
-        # Core Subsystems (Boot-critical)
         self.world_store = WorldStateStore.shared
-        self.device_guardian = DeviceGuardian(self.world_store)
-        self.failure_journal = FailureJournal.shared
-        self.metrics = MetricsCollector.shared
-
-        self.task_state_manager = TaskStateManager()
         self.policy_engine = PolicyEngine()
 
         self.wake_engine = WakeWordEngine()
@@ -53,4 +42,3 @@ class SubsystemManager:
         """Reclaims memory on high RAM pressure by evicting RAG vector caches and running Memory GC."""
         logger.info("Evicting heavy vector caches under memory pressure")
         self.memory_store.run_garbage_collection()
-        self.metrics.record_eviction()
