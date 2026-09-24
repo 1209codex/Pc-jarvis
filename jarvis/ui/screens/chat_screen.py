@@ -88,8 +88,8 @@ class ChatScreen(QWidget):
         self.add_message("You", text, is_user=True)
         
         # Run command async
-        import qasync
-        qasync.QTimer.singleShot(100, lambda: asyncio.get_event_loop().create_task(self.process_command(text)))
+        from PySide6.QtCore import QTimer
+        QTimer.singleShot(100, lambda: asyncio.get_event_loop().create_task(self.process_command(text)))
         
     async def process_command(self, text):
         res = await self.runtime.execute_command(text)
