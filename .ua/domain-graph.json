@@ -1,0 +1,1190 @@
+{
+  "version": "1.0.0",
+  "project": {
+    "name": "android-jarvis",
+    "languages": [
+      "Kotlin",
+      "Java",
+      "XML",
+      "Shell (Bash)",
+      "Python",
+      "Markdown",
+      "Gradle Kotlin DSL"
+    ],
+    "frameworks": [
+      "Android SDK (API 28-34 / Android 9.0+)",
+      "Google Material 3 / AndroidX (Google Stitch UI)",
+      "Kotlin Coroutines & Flow",
+      "TensorFlow Lite (TFLite DS-CNN Wake Engine)",
+      "Sherpa-ONNX (Offline ASR & TTS)",
+      "Groq Cloud LLM (Llama 3.3 70B & Vision 11B)",
+      "OkHttp 4 (Streaming REST Client)",
+      "Android Keystore (Hardware AES-GCM-256)",
+      "Android Accessibility Service & MediaSession",
+      "JUnit 4 & Coroutines Test"
+    ],
+    "description": "Autonomous Android AI super-agent and personal voice assistant domain workflow model mapping end-to-end operational pipelines.",
+    "analyzedAt": "2026-09-13T20:05:09.679Z",
+    "gitCommitHash": "30141e7554817f19d41bc282a8ec0a6534cf995c"
+  },
+  "nodes": [
+    {
+      "id": "domain:voice-interaction",
+      "type": "domain",
+      "name": "Hands-Free Voice & Acoustic Interaction",
+      "summary": "Continuous microphone capture, quantized TFLite DS-CNN keyword detection, personalized acoustic calibration, full-duplex acoustic barge-in, and Sherpa-ONNX speech synthesis.",
+      "tags": [
+        "voice",
+        "wake-word",
+        "audio",
+        "barge-in"
+      ],
+      "complexity": "complex",
+      "domainMeta": {
+        "entities": [
+          "UserVoiceProfile",
+          "WakeWordEngine",
+          "VoiceEngine",
+          "AudioRecordManager"
+        ],
+        "businessRules": [
+          "Wake phrase must achieve >= 0.70 confidence threshold unless adjusted by personalized calibration",
+          "Physical media button click or Arc Reactor tap triggers immediate speech silencing (barge-in)",
+          "Continuous audio stream must run on dedicated VOICE_RECOGNITION stream without ducking media"
+        ],
+        "crossDomainInteractions": [
+          "Dispatches recognized spoken intents to Autonomous Planning for multi-step decomposition",
+          "Streams synthesized spoken responses resulting from tool execution back to the user"
+        ]
+      }
+    },
+    {
+      "id": "domain:autonomous-planning",
+      "type": "domain",
+      "name": "Autonomous Planning & Safety Governance",
+      "summary": "Central intelligence orchestration: Groq LLM multi-step plan generation, dependency graph resolution, hallucination firewalling, safety policy compliance, and self-healing supervision.",
+      "tags": [
+        "agent",
+        "planning",
+        "firewall",
+        "safety"
+      ],
+      "complexity": "complex",
+      "domainMeta": {
+        "entities": [
+          "MultiTaskDecomposer",
+          "HallucinationFirewall",
+          "SafetyPolicyEngine",
+          "AutonomousDaemon"
+        ],
+        "businessRules": [
+          "All LLM-generated tool calls must pass HallucinationFirewall parameter sanitization",
+          "Tier 0-10 safety policy engine blocks dangerous or irreversible operations without user confirmation",
+          "Failed subtasks trigger self-healing reflection loops before aborting overall workflow"
+        ],
+        "crossDomainInteractions": [
+          "Invokes Device Automation tools to enact real-world state changes on the Android OS",
+          "Queries Neural Memory & RAG for relevant conversational facts and user preferences",
+          "Invokes Computer Vision perception when visual context is required"
+        ]
+      }
+    },
+    {
+      "id": "domain:device-automation",
+      "type": "domain",
+      "name": "Device Control & OS Accessibility Automation",
+      "summary": "Extensible capability ecosystem of 47 tools bridging Android AccessibilityService, synthetic touch gestures, hardware toggles, WhatsApp messaging, and telephony.",
+      "tags": [
+        "tools",
+        "automation",
+        "accessibility",
+        "os-control"
+      ],
+      "complexity": "complex",
+      "domainMeta": {
+        "entities": [
+          "ToolRegistry",
+          "LazyTool",
+          "JarvisAccessibilityService",
+          "UiAutomationManager",
+          "OsTools"
+        ],
+        "businessRules": [
+          "Tools must register parameter schemas lazily to prevent cold-start ANR delays",
+          "Synthetic touch events require verified AccessibilityService window active state",
+          "Automations must restore original app state upon completing background flows"
+        ],
+        "crossDomainInteractions": [
+          "Receives decomposed execution orders from Autonomous Planning",
+          "Feeds operation execution results back into Voice Interaction for spoken user feedback"
+        ]
+      }
+    },
+    {
+      "id": "domain:computer-vision",
+      "type": "domain",
+      "name": "Optical Perception & Multimodal Vision",
+      "summary": "Camera2 preview frame extraction, on-device TfLite object detection, screen vision OCR, and Groq multimodal vision reasoning (llama-3.2-11b-vision-preview).",
+      "tags": [
+        "vision",
+        "camera",
+        "ocr",
+        "multimodal"
+      ],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entities": [
+          "CameraPerceptionEngine",
+          "TfLiteVisionDetector",
+          "ScreenVisionManager",
+          "GroqLlm"
+        ],
+        "businessRules": [
+          "Camera2 sessions must immediately release camera hardware when scene analysis concludes",
+          "Vision detector downsamples frames to 512x512 JPEG before network transmission"
+        ],
+        "crossDomainInteractions": [
+          "Supplies visual context embeddings and OCR text to Autonomous Planning",
+          "Triggered by Voice Interaction commands such as \"What is this?\" or \"Read text\""
+        ]
+      }
+    },
+    {
+      "id": "domain:neural-memory-rag",
+      "type": "domain",
+      "name": "Neural Memory & Vector RAG Vault",
+      "summary": "On-device dense vector embeddings, BM25 keyword relevance, cross-encoder re-ranking, half-life exponential decay pruning, and hardware-backed Keystore encryption.",
+      "tags": [
+        "rag",
+        "memory",
+        "vector-search",
+        "keystore"
+      ],
+      "complexity": "complex",
+      "domainMeta": {
+        "entities": [
+          "RagRetriever",
+          "VectorStore",
+          "MemoryGarbageCollector",
+          "AndroidKeystore"
+        ],
+        "businessRules": [
+          "Memory records decay exponentially based on frequency and recency of recall",
+          "All stored API keys and sensitive credentials must be encrypted via AES-GCM-256 Android Keystore",
+          "Vector similarity search must combine BM25 text rank with cosine embedding score"
+        ],
+        "crossDomainInteractions": [
+          "Supplies personalized context facts to Autonomous Planning",
+          "Logs verified conversation turns from Voice Interaction into episodic memory"
+        ]
+      }
+    },
+    {
+      "id": "domain:proactive-intelligence",
+      "type": "domain",
+      "name": "Proactive Intelligence & Situational Daemons",
+      "summary": "Background situational intelligence: Daily morning briefing schedulers, calendar pre-briefings, battery threshold monitors, driving mode auto-detection, and WearOS companion sync.",
+      "tags": [
+        "proactive",
+        "routines",
+        "briefing",
+        "wearable"
+      ],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entities": [
+          "DailyBriefingScheduler",
+          "AmbientContextEngine",
+          "BatteryMonitor",
+          "WearSyncManager"
+        ],
+        "businessRules": [
+          "Morning briefing triggers only once per day within user-scheduled time window",
+          "Driving mode automatically silences noisy visual alerts and activates voice auto-replies",
+          "Low battery warnings trigger proactive power-saving tool recommendations"
+        ],
+        "crossDomainInteractions": [
+          "Triggers Voice Interaction for unsolicited verbal briefings",
+          "Controls Device Automation to enact situational hardware toggles (Wi-Fi, Bluetooth, battery)"
+        ]
+      }
+    },
+    {
+      "id": "flow:wake-word-detection",
+      "type": "flow",
+      "name": "Hands-Free Wake-Word & Listening Activation",
+      "summary": "Continuous audio capture detects \"Hey Jarvis\" via on-device TFLite DS-CNN, matches calibrated user profile, and opens the voice listening window with acoustic chime.",
+      "tags": [
+        "wake-word",
+        "activation",
+        "tflite"
+      ],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "Continuous AudioStream PCM (16kHz mono)",
+        "entryType": "event"
+      }
+    },
+    {
+      "id": "step:wake-word-detection:stream-audio-pcm",
+      "type": "step",
+      "name": "Stream Microphone PCM Audio",
+      "filePath": "app/src/main/java/com/jarvis/voice/AudioRecordManager.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "AudioRecordManager continuously streams 16kHz mono PCM frames on a low-latency dedicated thread.",
+      "tags": [
+        "audio",
+        "streaming"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:wake-word-detection:tflite-keyword-spotting",
+      "type": "step",
+      "name": "TFLite DS-CNN Keyword Spotting",
+      "filePath": "app/src/main/java/com/jarvis/voice/WakeWordEngine.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "WakeWordEngine evaluates audio frames through quantized INT8 DS-CNN model to compute \"Hey Jarvis\" confidence.",
+      "tags": [
+        "tflite",
+        "wake-word"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "step:wake-word-detection:calibrate-user-profile",
+      "type": "step",
+      "name": "Calibrate Against User Voice Profile",
+      "filePath": "app/src/main/java/com/jarvis/wakeword/UserVoiceProfile.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "UserVoiceProfile compares score against personalized detection threshold and ambient noise floor.",
+      "tags": [
+        "calibration",
+        "profile"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "step:wake-word-detection:play-chime-acknowledgment",
+      "type": "step",
+      "name": "Play Acoustic Acknowledgment Chime",
+      "filePath": "app/src/main/java/com/jarvis/voice/VoiceEngine.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "VoiceEngine emits acoustic chime or \"Yes Sir\" sound effect and transitions UI to active listening waveform.",
+      "tags": [
+        "tts",
+        "audio-feedback"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:wake-word-detection:open-speech-recognizer",
+      "type": "step",
+      "name": "Open Speech Recognizer Session",
+      "filePath": "app/src/main/java/com/jarvis/runtime/AssistantRuntime.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "AssistantRuntime starts ASR transcription session to capture user command.",
+      "tags": [
+        "asr",
+        "runtime"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "flow:conversational-barge-in",
+      "type": "flow",
+      "name": "Physical & Acoustic Barge-In Interruption",
+      "summary": "Silences J.A.R.V.I.S. speech mid-sentence upon earbud media button click or Arc Reactor tap, seamlessly preserving context.",
+      "tags": [
+        "barge-in",
+        "interrupt",
+        "media-session"
+      ],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "MediaSession KEYCODE_HEADSETHOOK / UI Arc Reactor Tap",
+        "entryType": "event"
+      }
+    },
+    {
+      "id": "step:conversational-barge-in:intercept-button-event",
+      "type": "step",
+      "name": "Intercept Headset Media Button Hook",
+      "filePath": "app/src/main/java/com/jarvis/bluetooth/HeadsetMediaButtonManager.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "HeadsetMediaButtonManager captures KEYCODE_HEADSETHOOK with 400ms debounce filter.",
+      "tags": [
+        "bluetooth",
+        "hardware"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:conversational-barge-in:halt-speech-synthesis",
+      "type": "step",
+      "name": "Halt Active Speech Synthesis",
+      "filePath": "app/src/main/java/com/jarvis/voice/VoiceEngine.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "VoiceEngine stops audio track playback and cancels pending TTS buffers instantly.",
+      "tags": [
+        "tts",
+        "playback"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:conversational-barge-in:resume-ambient-listening",
+      "type": "step",
+      "name": "Resume Active Ambient Listening",
+      "filePath": "app/src/main/java/com/jarvis/runtime/AssistantRuntime.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "AssistantRuntime clears audio output state and immediately reactivates microphone listening.",
+      "tags": [
+        "runtime",
+        "listening"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "flow:multitask-goal-decomposition",
+      "type": "flow",
+      "name": "Multi-Task Goal Decomposition & Safe Execution",
+      "summary": "Parses complex natural language intents into a multi-step execution graph, verifies tool calls with HallucinationFirewall, and executes subtasks.",
+      "tags": [
+        "planning",
+        "groq",
+        "decomposer",
+        "firewall"
+      ],
+      "complexity": "complex",
+      "domainMeta": {
+        "entryPoint": "AssistantRuntime.processUserCommand(text)",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "step:multitask-goal-decomposition:ingest-user-intent",
+      "type": "step",
+      "name": "Ingest User Spoken / Typed Intent",
+      "filePath": "app/src/main/java/com/jarvis/runtime/AssistantRuntime.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "AssistantRuntime receives verified prompt and builds conversational context packet.",
+      "tags": [
+        "intent",
+        "context"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:multitask-goal-decomposition:groq-llm-reasoning",
+      "type": "step",
+      "name": "Groq LLM Reasoning & Plan Generation",
+      "filePath": "app/src/main/java/com/jarvis/ai/GroqLlm.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "GroqLlm queries llama-3.3-70b-versatile with tool definitions and structured planning prompt.",
+      "tags": [
+        "llm",
+        "groq",
+        "inference"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "step:multitask-goal-decomposition:decompose-tasks",
+      "type": "step",
+      "name": "Parse Decomposed Task Graph",
+      "filePath": "app/src/main/java/com/jarvis/agent/MultiTaskDecomposer.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "MultiTaskDecomposer parses JSON response into sequential subtask nodes with dependency tracking.",
+      "tags": [
+        "planner",
+        "dag"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "step:multitask-goal-decomposition:hallucination-firewall",
+      "type": "step",
+      "name": "Validate Against Hallucination Firewall",
+      "filePath": "app/src/main/java/com/jarvis/agent/HallucinationFirewall.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "HallucinationFirewall verifies tool names and sanitizes parameter types against ToolRegistry metadata.",
+      "tags": [
+        "firewall",
+        "safety"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "step:multitask-goal-decomposition:safety-policy-audit",
+      "type": "step",
+      "name": "Audit Tier 0-10 Safety Policy",
+      "filePath": "app/src/main/java/com/jarvis/foundation/AutonomyPolicy.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "AutonomyPolicy checks risk level and requests user confirmation if operation crosses risk threshold.",
+      "tags": [
+        "safety",
+        "policy"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "step:multitask-goal-decomposition:dispatch-subtasks",
+      "type": "step",
+      "name": "Dispatch Subtasks to Execution Pipeline",
+      "filePath": "app/src/main/java/com/jarvis/controlplane/ExecutionPipeline.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "ExecutionPipeline invokes registered tool instances sequentially and records execution journal.",
+      "tags": [
+        "execution",
+        "pipeline"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "flow:os-accessibility-navigation",
+      "type": "flow",
+      "name": "Accessibility Screen Navigation & UI Automation",
+      "summary": "Dumps screen node hierarchy, locates target UI elements by text or coordinates, and dispatches synthetic gestures.",
+      "tags": [
+        "accessibility",
+        "ui-automation",
+        "gestures"
+      ],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "UiTools.clickElement(selector)",
+        "entryType": "manual"
+      }
+    },
+    {
+      "id": "step:os-accessibility-navigation:capture-window-hierarchy",
+      "type": "step",
+      "name": "Capture Window Accessibility Node Hierarchy",
+      "filePath": "app/src/main/java/com/jarvis/accessibility/JarvisAccessibilityService.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "JarvisAccessibilityService dumps active window node tree into structured hierarchy model.",
+      "tags": [
+        "accessibility",
+        "nodes"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "step:os-accessibility-navigation:resolve-target-element",
+      "type": "step",
+      "name": "Resolve Target UI Node Element",
+      "filePath": "app/src/main/java/com/jarvis/accessibility/UiAutomationManager.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "UiAutomationManager matches target label or resource ID against accessibility nodes.",
+      "tags": [
+        "ui",
+        "selector"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "step:os-accessibility-navigation:dispatch-synthetic-gesture",
+      "type": "step",
+      "name": "Dispatch Synthetic Touch Gesture",
+      "filePath": "app/src/main/java/com/jarvis/accessibility/JarvisAccessibilityService.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "JarvisAccessibilityService executes dispatchGesture with Path gesture coordinates.",
+      "tags": [
+        "gesture",
+        "touch"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "flow:smart-messaging-auto-reply",
+      "type": "flow",
+      "name": "WhatsApp & Smart Messaging Automation",
+      "summary": "Intercepts incoming WhatsApp messages, checks situational driving context, and composes and sends automatic replies.",
+      "tags": [
+        "whatsapp",
+        "messaging",
+        "auto-reply"
+      ],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "NotificationListenerService (WhatsApp package)",
+        "entryType": "event"
+      }
+    },
+    {
+      "id": "step:smart-messaging-auto-reply:intercept-notification",
+      "type": "step",
+      "name": "Intercept Inbound Notification",
+      "filePath": "app/src/main/java/com/jarvis/notification/JarvisNotificationListenerService.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "NotificationListener catches WhatsApp message bundle with sender and message body.",
+      "tags": [
+        "notification",
+        "interception"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:smart-messaging-auto-reply:check-driving-context",
+      "type": "step",
+      "name": "Evaluate Ambient Driving Context",
+      "filePath": "app/src/main/java/com/jarvis/autonomous/AmbientContextEngine.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "AmbientContextEngine checks whether driving mode is currently active.",
+      "tags": [
+        "context",
+        "driving-mode"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:smart-messaging-auto-reply:transmit-reply",
+      "type": "step",
+      "name": "Transmit Automated WhatsApp Reply",
+      "filePath": "app/src/main/java/com/jarvis/messaging/MessagingManager.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "MessagingTool formats reply and transmits via NotificationCompat reply action.",
+      "tags": [
+        "messaging",
+        "whatsapp"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "flow:visual-perception-pipeline",
+      "type": "flow",
+      "name": "Camera Vision & Multimodal Perception",
+      "summary": "Captures Camera2 frame, runs on-device object detection, queries Groq Vision LLM, and speaks scene description.",
+      "tags": [
+        "vision",
+        "camera2",
+        "tflite-vision",
+        "groq-vision"
+      ],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "SkillsScreen / Voice Command: \"What is this?\"",
+        "entryType": "manual"
+      }
+    },
+    {
+      "id": "step:visual-perception-pipeline:capture-camera-frame",
+      "type": "step",
+      "name": "Capture Frame from Camera2 Session",
+      "filePath": "app/src/main/java/com/jarvis/camera/CameraPerceptionEngine.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "CameraPerceptionEngine captures high-res snapshot and converts to JPEG bitmap.",
+      "tags": [
+        "camera2",
+        "capture"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "step:visual-perception-pipeline:on-device-object-detection",
+      "type": "step",
+      "name": "Run On-Device TFLite Object Detection",
+      "filePath": "app/src/main/java/com/jarvis/camera/TfLiteVisionDetector.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "TfLiteVisionDetector performs fast local inference to identify bounding boxes and label candidates.",
+      "tags": [
+        "tflite",
+        "object-detection"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "step:visual-perception-pipeline:groq-vision-inference",
+      "type": "step",
+      "name": "Query Groq Vision Multimodal LLM",
+      "filePath": "app/src/main/java/com/jarvis/ai/GroqLlm.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "GroqLlm sends base64 image and user prompt to llama-3.2-11b-vision-preview.",
+      "tags": [
+        "vision-llm",
+        "groq"
+      ],
+      "complexity": "complex"
+    },
+    {
+      "id": "step:visual-perception-pipeline:speak-scene-description",
+      "type": "step",
+      "name": "Synthesize Spoken Scene Description",
+      "filePath": "app/src/main/java/com/jarvis/voice/VoiceEngine.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "VoiceEngine speaks multimodal scene explanation through active audio route.",
+      "tags": [
+        "tts",
+        "speech"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "flow:hybrid-memory-retrieval",
+      "type": "flow",
+      "name": "Hybrid Vector RAG & Memory Re-Ranking",
+      "summary": "Performs cosine vector search combined with BM25 keyword rank, applies cross-encoder re-ranking, and injects relevant facts.",
+      "tags": [
+        "rag",
+        "vector-search",
+        "bm25",
+        "reranker"
+      ],
+      "complexity": "complex",
+      "domainMeta": {
+        "entryPoint": "RagRetriever.retrieveContext(query)",
+        "entryType": "cli"
+      }
+    },
+    {
+      "id": "step:hybrid-memory-retrieval:dense-vector-lookup",
+      "type": "step",
+      "name": "Dense Vector Cosine Similarity Lookup",
+      "filePath": "app/src/main/java/com/jarvis/rag/RagRetriever.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "RagRetriever queries on-device vector embeddings for top semantic candidate chunks.",
+      "tags": [
+        "vector",
+        "embedding"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "step:hybrid-memory-retrieval:bm25-scoring",
+      "type": "step",
+      "name": "BM25 Keyword Relevance Scoring",
+      "filePath": "app/src/main/java/com/jarvis/retrieval/engine/RetrievalEngine.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "RetrievalEngine executes BM25 search to capture exact entity matches.",
+      "tags": [
+        "bm25",
+        "keyword"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "step:hybrid-memory-retrieval:cross-encoder-rerank",
+      "type": "step",
+      "name": "Cross-Encoder Re-Ranking",
+      "filePath": "app/src/main/java/com/jarvis/retrieval/reranker/CrossEncoderReranker.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "CrossEncoderReranker computes joint attention score to re-rank candidate documents.",
+      "tags": [
+        "reranker",
+        "attention"
+      ],
+      "complexity": "moderate"
+    },
+    {
+      "id": "step:hybrid-memory-retrieval:decay-garbage-collection",
+      "type": "step",
+      "name": "Exponential Half-Life Decay Garbage Collection",
+      "filePath": "app/src/main/java/com/jarvis/memory/MemoryGarbageCollector.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "MemoryGarbageCollector prunes expired episodic facts based on memory half-life decay.",
+      "tags": [
+        "memory-decay",
+        "gc"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "flow:daily-morning-briefing",
+      "type": "flow",
+      "name": "Daily Morning Briefing & Agenda Synthesis",
+      "summary": "AlarmManager triggers morning routine, pulls calendar agenda, verifies device battery, and delivers voice briefing.",
+      "tags": [
+        "briefing",
+        "proactive",
+        "calendar",
+        "battery"
+      ],
+      "complexity": "moderate",
+      "domainMeta": {
+        "entryPoint": "DailyBriefingReceiver Alarm (HH:mm)",
+        "entryType": "cron"
+      }
+    },
+    {
+      "id": "step:daily-morning-briefing:alarm-trigger",
+      "type": "step",
+      "name": "AlarmManager Morning Trigger Broadcast",
+      "filePath": "app/src/main/java/com/jarvis/automation/DailyBriefingReceiver.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "DailyBriefingReceiver wakes service at user-configured briefing time.",
+      "tags": [
+        "alarm",
+        "scheduler"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:daily-morning-briefing:query-calendar-agenda",
+      "type": "step",
+      "name": "Query Calendar Agenda & Events",
+      "filePath": "app/src/main/java/com/jarvis/tools/CalendarTool.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "CalendarTool reads user Google Calendar events for the upcoming 24 hours.",
+      "tags": [
+        "calendar",
+        "events"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:daily-morning-briefing:check-device-health",
+      "type": "step",
+      "name": "Check Battery Status & Health",
+      "filePath": "app/src/main/java/com/jarvis/tools/BatteryStatusTool.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "BatteryStatusTool inspects battery percentage, charging state, and health temperature.",
+      "tags": [
+        "battery",
+        "health"
+      ],
+      "complexity": "simple"
+    },
+    {
+      "id": "step:daily-morning-briefing:deliver-spoken-briefing",
+      "type": "step",
+      "name": "Deliver Proactive Spoken Briefing",
+      "filePath": "app/src/main/java/com/jarvis/voice/VoiceEngine.kt",
+      "lineRange": [
+        1,
+        20
+      ],
+      "summary": "VoiceEngine synthesizes synthesized briefing summarizing day events, battery, and top news.",
+      "tags": [
+        "briefing",
+        "tts"
+      ],
+      "complexity": "simple"
+    }
+  ],
+  "edges": [
+    {
+      "source": "domain:voice-interaction",
+      "target": "flow:wake-word-detection",
+      "type": "contains_flow",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "flow:wake-word-detection",
+      "target": "step:wake-word-detection:stream-audio-pcm",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.2
+    },
+    {
+      "source": "flow:wake-word-detection",
+      "target": "step:wake-word-detection:tflite-keyword-spotting",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.4
+    },
+    {
+      "source": "flow:wake-word-detection",
+      "target": "step:wake-word-detection:calibrate-user-profile",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.6
+    },
+    {
+      "source": "flow:wake-word-detection",
+      "target": "step:wake-word-detection:play-chime-acknowledgment",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "flow:wake-word-detection",
+      "target": "step:wake-word-detection:open-speech-recognizer",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "domain:voice-interaction",
+      "target": "flow:conversational-barge-in",
+      "type": "contains_flow",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "flow:conversational-barge-in",
+      "target": "step:conversational-barge-in:intercept-button-event",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.3
+    },
+    {
+      "source": "flow:conversational-barge-in",
+      "target": "step:conversational-barge-in:halt-speech-synthesis",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "flow:conversational-barge-in",
+      "target": "step:conversational-barge-in:resume-ambient-listening",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "domain:autonomous-planning",
+      "target": "flow:multitask-goal-decomposition",
+      "type": "contains_flow",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "flow:multitask-goal-decomposition",
+      "target": "step:multitask-goal-decomposition:ingest-user-intent",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.2
+    },
+    {
+      "source": "flow:multitask-goal-decomposition",
+      "target": "step:multitask-goal-decomposition:groq-llm-reasoning",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.3
+    },
+    {
+      "source": "flow:multitask-goal-decomposition",
+      "target": "step:multitask-goal-decomposition:decompose-tasks",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "flow:multitask-goal-decomposition",
+      "target": "step:multitask-goal-decomposition:hallucination-firewall",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "flow:multitask-goal-decomposition",
+      "target": "step:multitask-goal-decomposition:safety-policy-audit",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "flow:multitask-goal-decomposition",
+      "target": "step:multitask-goal-decomposition:dispatch-subtasks",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "domain:device-automation",
+      "target": "flow:os-accessibility-navigation",
+      "type": "contains_flow",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "flow:os-accessibility-navigation",
+      "target": "step:os-accessibility-navigation:capture-window-hierarchy",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.3
+    },
+    {
+      "source": "flow:os-accessibility-navigation",
+      "target": "step:os-accessibility-navigation:resolve-target-element",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "flow:os-accessibility-navigation",
+      "target": "step:os-accessibility-navigation:dispatch-synthetic-gesture",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "domain:device-automation",
+      "target": "flow:smart-messaging-auto-reply",
+      "type": "contains_flow",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "flow:smart-messaging-auto-reply",
+      "target": "step:smart-messaging-auto-reply:intercept-notification",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.3
+    },
+    {
+      "source": "flow:smart-messaging-auto-reply",
+      "target": "step:smart-messaging-auto-reply:check-driving-context",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.7
+    },
+    {
+      "source": "flow:smart-messaging-auto-reply",
+      "target": "step:smart-messaging-auto-reply:transmit-reply",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "domain:computer-vision",
+      "target": "flow:visual-perception-pipeline",
+      "type": "contains_flow",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "flow:visual-perception-pipeline",
+      "target": "step:visual-perception-pipeline:capture-camera-frame",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.3
+    },
+    {
+      "source": "flow:visual-perception-pipeline",
+      "target": "step:visual-perception-pipeline:on-device-object-detection",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "flow:visual-perception-pipeline",
+      "target": "step:visual-perception-pipeline:groq-vision-inference",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "flow:visual-perception-pipeline",
+      "target": "step:visual-perception-pipeline:speak-scene-description",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "domain:neural-memory-rag",
+      "target": "flow:hybrid-memory-retrieval",
+      "type": "contains_flow",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "flow:hybrid-memory-retrieval",
+      "target": "step:hybrid-memory-retrieval:dense-vector-lookup",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.3
+    },
+    {
+      "source": "flow:hybrid-memory-retrieval",
+      "target": "step:hybrid-memory-retrieval:bm25-scoring",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "flow:hybrid-memory-retrieval",
+      "target": "step:hybrid-memory-retrieval:cross-encoder-rerank",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "flow:hybrid-memory-retrieval",
+      "target": "step:hybrid-memory-retrieval:decay-garbage-collection",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "domain:proactive-intelligence",
+      "target": "flow:daily-morning-briefing",
+      "type": "contains_flow",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "flow:daily-morning-briefing",
+      "target": "step:daily-morning-briefing:alarm-trigger",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.3
+    },
+    {
+      "source": "flow:daily-morning-briefing",
+      "target": "step:daily-morning-briefing:query-calendar-agenda",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.5
+    },
+    {
+      "source": "flow:daily-morning-briefing",
+      "target": "step:daily-morning-briefing:check-device-health",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 0.8
+    },
+    {
+      "source": "flow:daily-morning-briefing",
+      "target": "step:daily-morning-briefing:deliver-spoken-briefing",
+      "type": "flow_step",
+      "direction": "forward",
+      "weight": 1
+    },
+    {
+      "source": "domain:voice-interaction",
+      "target": "domain:autonomous-planning",
+      "type": "cross_domain",
+      "direction": "forward",
+      "description": "Streams transcribed user voice prompts into autonomous goal decomposition",
+      "weight": 0.8
+    },
+    {
+      "source": "domain:autonomous-planning",
+      "target": "domain:device-automation",
+      "type": "cross_domain",
+      "direction": "forward",
+      "description": "Enacts decomposed tool actions through 47 device automation tools",
+      "weight": 0.9
+    },
+    {
+      "source": "domain:autonomous-planning",
+      "target": "domain:computer-vision",
+      "type": "cross_domain",
+      "direction": "forward",
+      "description": "Dispatches visual scene perception when user query requires optical context",
+      "weight": 0.7
+    },
+    {
+      "source": "domain:autonomous-planning",
+      "target": "domain:neural-memory-rag",
+      "type": "cross_domain",
+      "direction": "forward",
+      "description": "Injects relevant user facts and conversation history into prompt context",
+      "weight": 0.8
+    },
+    {
+      "source": "domain:proactive-intelligence",
+      "target": "domain:voice-interaction",
+      "type": "cross_domain",
+      "direction": "forward",
+      "description": "Triggers spoken morning briefings and proactive conversational reminders",
+      "weight": 0.7
+    },
+    {
+      "source": "domain:device-automation",
+      "target": "domain:voice-interaction",
+      "type": "cross_domain",
+      "direction": "forward",
+      "description": "Feeds tool execution outcomes and status back for verbal user confirmation",
+      "weight": 0.8
+    }
+  ],
+  "layers": [],
+  "tour": []
+}

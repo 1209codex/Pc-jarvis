@@ -1,0 +1,7 @@
+Speaker encoder model: tflite-hub/conformer-speaker-encoder
+Model card: https://huggingface.co/tflite-hub/conformer-speaker-encoder
+License declared by the model card: Apache License 2.0 (see LICENSE-2.0.txt).
+Bundled artifacts: conformer_tisid_medium.tflite, vad_long_model.tflite,
+and vad_long_mean_stddev.csv. Model card states the encoder is multilingual
+and trained with public data using GE2E loss. No accuracy or threshold claim
+is made here; this app must be evaluated with consented target-device samples.

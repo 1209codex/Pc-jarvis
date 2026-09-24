@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ic_launcher_background">#05090D</color>
+    <color name="jarvis_bg">#05090D</color>
+    <color name="jarvis_surface">#0B131B</color>
+    <color name="jarvis_surface_2">#101A23</color>
+    <color name="jarvis_cyan">#63EFFF</color>
+    <color name="jarvis_text">#E8F2F7</color>
+    <color name="jarvis_muted">#8FA7B6</color>
+</resources>

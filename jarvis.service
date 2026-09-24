@@ -1,0 +1,13 @@
+[Unit]
+Description=J.A.R.V.I.S. Autonomous Linux AI Super-Agent Daemon
+After=network.target sound.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 -m jarvis.main --daemon
+Restart=always
+RestartSec=5
+Environment=PYTHONUNBUFFERED=1
+
+[Install]
+WantedBy=default.target

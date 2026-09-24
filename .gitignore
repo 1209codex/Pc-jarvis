@@ -1,0 +1,48 @@
+*.iml
+.gradle
+/local.properties
+/.idea/caches
+/.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
+/.idea/navEditor.xml
+/.idea/assetWizardSettings.xml
+.DS_Store
+/build
+/captures
+.externalNativeBuild
+.cxx
+local.properties
+.reticle/
+
+# App build outputs
+app/build/
+build/
+*/build/
+
+# Downloaded models & temporary dirs
+/models/
+/logs/
+/apks/
+/apk-optimization/
+*.onnx
+*.tar.bz2
+*.apk
+/dist/
+/exports/
+exports/
+
+# Understand-Anything transient files
+.ua/intermediate/
+.ua/tmp/
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# IDE / workspace metadata
+.opencode/
+
+
+venv/

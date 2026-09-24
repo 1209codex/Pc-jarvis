@@ -1,0 +1,23 @@
+package com.jarvis.voice
+
+enum class VoiceState {
+    IDLE,
+    WAITING_FOR_WAKE,
+    WAKE_DETECTED,
+    LISTENING,
+    UNDERSTANDING,
+    CHECKING_MEMORY,
+    RESEARCHING,
+    THINKING,
+    EXECUTING,
+    VERIFYING,
+    RECOVERING,
+    WAITING_FOR_USER,
+    SPEAKING,
+    COMPLETED,
+    INTERRUPTED,
+    CANCELLED,
+    OFFLINE,
+    ERROR
+}
+

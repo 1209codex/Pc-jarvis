@@ -1,0 +1,67 @@
+{
+  "project": "Android JARVIS",
+  "branchName": "ralph/system-audio-refactor",
+  "description": "Refactor and harden the J.A.R.V.I.S. Android system audio stack to eliminate volume degradation hazards, routing leaks, and focus orphan defects.",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Update MediaDuckingManager and VoiceAudioFocusManager",
+      "description": "As a developer, I need the media ducking logic to rely on OS transient focus instead of hardcoded volume overrides to prevent permanent volume degradation.",
+      "acceptanceCriteria": [
+        "Remove explicit am.setStreamVolume(STREAM_MUSIC, ...) logic from MediaDuckingManager",
+        "Rely on VoiceAudioFocusManager.requestDuckFocus() to acquire AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK",
+        "Reuse AudioFocusRequest instances in VoiceAudioFocusManager instead of overwriting active ones",
+        "Typecheck passes",
+        "Tests pass"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Ensure Audio Focus release on Engine Teardown",
+      "description": "As a user, I want voice engines to properly release audio focus when they are closed or cancelled so my background media volume returns to normal.",
+      "acceptanceCriteria": [
+        "Add mediaDuckingManager.restoreVolume() to VoiceEngine.close()",
+        "Add audioFocus.abandon() to AndroidTtsEngine.cancel()",
+        "Remove am.setCommunicationDevice() calls during recognizer initialization in AndroidSpeechRecognizerEngine",
+        "Typecheck passes",
+        "Tests pass"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Implement Scoped Bluetooth SCO Routing",
+      "description": "As a user, I want my Bluetooth headset to only activate SCO when actively listening or speaking to save battery and avoid audio glitches.",
+      "acceptanceCriteria": [
+        "Update JarvisForegroundService.startBluetoothScoObserver() to activate SCO only when voiceState == LISTENING or SPEAKING",
+        "Save previousAudioMode and tracked ownedCommunicationDeviceId in BluetoothHeadsetManager",
+        "Restore previousAudioMode and clear only owned communication devices on Android 12+ during stopScoRouting()",
+        "Refactor ACTION_ACL_CONNECTED/DISCONNECTED to query active audio profiles instead of assuming generic links",
+        "Typecheck passes",
+        "Tests pass"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Fix DeviceSettingsTool Volume Restore",
+      "description": "As a user, I want the system to remember my volume before muting, so that unmuting restores it accurately rather than defaulting to 50%.",
+      "acceptanceCriteria": [
+        "Require explicit action and volume_percent parameters in DeviceSettingsTool",
+        "Track savedPreMuteVolume so unmute accurately restores pre-mute stream volume",
+        "Typecheck passes",
+        "Tests pass"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Jarvis</string>
+    <string name="accessibility_service_description">Enables Jarvis to automate on-screen actions, auto-click, scroll feeds, and send messages autonomously.</string>
+</resources>
